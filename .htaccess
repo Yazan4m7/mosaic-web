@@ -1,0 +1,29 @@
+DirectoryIndex index.html
+
+RewriteEngine on
+
+#Emad Alwari 1-10-2016 - Transfer all traffic to HTTPS without braking any link
+
+
+RewriteCond %{HTTPS} off
+RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+
+# Emad To Here
+
+<FilesMatch "\.(html|htm|js|css)$">
+  FileETag None
+  <IfModule mod_headers.c>
+    Header unset ETag
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "Wed, 12 Jan 1980 05:00:00 GMT"
+  </IfModule>
+</FilesMatch>
+
+RewriteCond %{REQUEST_URI} !^(index\.php|\.swf|forums|images|css|downloads|js|robots\.txt|favicon\.ico)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*) ./index.html [L]
+
+
